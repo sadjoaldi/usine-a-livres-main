@@ -50,10 +50,9 @@ export class BookRouter implements Router {
       },
       async (request, reply) => {
         const reqBody = request.body;
+        const createdBook = await this.bookService.create(reqBody);
 
-        await this.bookService.create(reqBody);
-
-        return reply.code(201);
+        return reply.code(201).send(createdBook);
       },
     );
 
@@ -66,8 +65,8 @@ export class BookRouter implements Router {
         const id = request.params.id;
         const reqBody = request.body;
 
-        await this.bookService.update(id, reqBody);
-        return reply.code(200);
+        const updatedBook = await this.bookService.update(id, reqBody);
+        return reply.code(200).send(updatedBook);
       },
     );
 
@@ -81,7 +80,7 @@ export class BookRouter implements Router {
 
         await this.bookService.delete(id);
 
-        return reply.code(204);
+        return reply.code(204).send();
       },
     );
   }

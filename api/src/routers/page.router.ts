@@ -61,9 +61,9 @@ export class PageRouter implements Router {
         const pageId = request.params.pageId;
         const id = request.params.id;
 
-        const deletedPage = await this.pageService.delete(id, pageId);
+        await this.pageService.delete(id, pageId);
 
-        return reply.code(204).send(deletedPage);
+        return reply.code(204).send();
       },
     );
   }

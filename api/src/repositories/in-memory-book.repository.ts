@@ -1,5 +1,5 @@
-import type { BookFields, BookRecord } from "../domain/book"
-import type { BookRepository } from "./book.repository"
+import type { BookFields, BookRecord } from "../domain/book";
+import type { BookRepository } from "./book.repository";
 
 /**
  * Les livres en mémoire, perdus à l'arrêt du serveur.
@@ -7,26 +7,40 @@ import type { BookRepository } from "./book.repository"
  * Aucune règle métier ici : pas de doublon à vérifier, pas d'erreur à lever. Un livre absent, c'est `undefined`.
  */
 export class InMemoryBookRepository implements BookRepository {
+  private books: BookRecord[] = [];
+
   findAll(): BookRecord[] {
-    throw new Error("À faire")
+    return this.books;
   }
 
   findById(id: number): BookRecord | undefined {
-    throw new Error("À faire")
+    return this.books.find((book) => book.id === id);
   }
 
   /** Attribuer un id neuf (1, 2, 3…), ranger le livre, le renvoyer. */
   create(data: Omit<BookRecord, "id">): BookRecord {
-    throw new Error("À faire")
+    const nextId =
+      this.books.reduce((max, book) => Math.max(max, book.id), 0) + 1;
+    const newBook: BookRecord = { id: nextId, ...data };
+    this.books.push(newBook);
+    return newBook;
   }
 
   /** Remplacer les champs du livre ; `undefined` s'il n'existe pas. */
   update(id: number, fields: BookFields): BookRecord | undefined {
-    throw new Error("À faire")
+    const book = this.findById(id);
+    if (!book) return undefined;
+
+    Object.assign(book, fields);
+    return book;
   }
 
   /** `true` si le livre existait. */
   delete(id: number): boolean {
-    throw new Error("À faire")
+    const index = this.books.findIndex((book) => book.id === id);
+    if (index === -1) return false;
+
+    this.books.splice(index, 1);
+    return true;
   }
 }
