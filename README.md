@@ -12,7 +12,7 @@ dépend de qui, compléter là où il faut.
 Node 22.12 ou plus récent (`node -v`).
 
 ```bash
-npm install
+npm **install**
 npm run dev          # API sur http://localhost:3000, front sur http://localhost:5173
 npm test             # les tests de l'API
 npm run type-check   # TypeScript sur l'API et sur le front
@@ -207,4 +207,5 @@ En mémoire, tout est perdu à chaque redémarrage. Le bonus range livres et pag
 
 Vérifier : créer un livre, arrêter `npm run dev`, relancer, le livre est toujours là. `tests/json-file.test.ts`
 passe. Le dossier `api/data/` n'est pas versionné.
+
 # usine-a-livres-main
