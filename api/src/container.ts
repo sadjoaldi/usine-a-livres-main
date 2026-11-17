@@ -8,12 +8,15 @@ import { InMemoryPageRepository } from "./repositories/in-memory-page.repository
 import { JsonFile } from "./repositories/json-file";
 import { JsonFileBookRepository } from "./repositories/json-file-book.repository";
 import { JsonFilePageRepository } from "./repositories/json-file-page.repository";
+import { JsonFileUserRepository } from "./repositories/json-file-user.repository";
 import type { PageRepository } from "./repositories/page.repository";
+import type { UserRepository } from "./repositories/user.repository";
 import { BookRouter } from "./routers/book.router";
 import { PageRouter } from "./routers/page.router";
 import type { Router } from "./routers/router";
 import { bookRecordSchema } from "./schemas/book.schema";
 import { pageRecordSchema } from "./schemas/page.schema";
+import { userRecordSchema, type UserRecord } from "./schemas/user.schema";
 import { BookService } from "./services/book.service";
 import { PageService } from "./services/page.service";
 import { SystemClock } from "./services/system-clock";
@@ -60,6 +63,7 @@ export class Container {
     // 1 les 2 repositories
     let bookRepository: BookRepository;
     let pageRepository: PageRepository;
+    let userRepository: UserRepository;
 
     switch (config.storage) {
       case "memory":
@@ -77,10 +81,14 @@ export class Container {
           `${config.dataDir}/pages.json`,
           pageRecordSchema,
         );
+        const userFile = new JsonFile<UserRecord>(
+          `${config.dataDir}/users.json`,
+          userRecordSchema,
+        );
 
         bookRepository = new JsonFileBookRepository(bookFile);
         pageRepository = new JsonFilePageRepository(pageFile);
-
+        userRepository = new JsonFileUserRepository(userFile);
         break;
     }
 

@@ -1,4 +1,5 @@
 import cors from "@fastify/cors";
+import jwt from "@fastify/jwt";
 import Fastify, { type FastifyInstance } from "fastify";
 import {
   hasZodFastifySchemaValidationErrors,
@@ -41,6 +42,11 @@ export function buildApp(
   app.register(cors, {
     origin: options.webOrigin ?? "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
+  });
+
+  // À faire : brancher le plugin JWT, avec la clé secrète dans process.env.JWT_SECRET.
+  app.register(jwt, {
+    secret: process.env.JWT_SECRET ?? "À définir dans .env.local",
   });
 
   // Fourni : une route qui n'existe pas répond 404 RouteNotFound ; le front affiche « Route non implémentée ».
